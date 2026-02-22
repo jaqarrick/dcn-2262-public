@@ -1,0 +1,27 @@
+services:
+  as:
+    build: ./AS
+    container_name: as-server
+    ports:
+      - "53533:53533/udp"
+    environment:
+      - AS_PORT=53533
+
+  fs:
+    build: ./FS
+    container_name: fs-server
+    ports:
+      - "9090:9090"
+    environment:
+      - FLASK_RUN_PORT=9090
+    depends_on:
+      - as
+  us:
+    build: ./US
+    container_name: us-server
+    ports:
+      - "8080:8080"
+    environment:
+      - FLASK_RUN_PORT=8080
+    depends_on:
+      - fs
