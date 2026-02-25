@@ -1,6 +1,7 @@
 FROM python:3.9-slim
 
 RUN apt-get update && \
+    apt-get install -y make curl && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -12,5 +13,5 @@ COPY --chown=nyu:nyu requirements.txt Makefile .
 RUN pip install -r requirements.txt
 USER nyu
 COPY --chown=nyu:nyu . .
-EXPOSE 53533/udp
+EXPOSE 8080
 CMD [ "python", "./app.py" ]

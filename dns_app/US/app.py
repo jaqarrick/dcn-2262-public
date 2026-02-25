@@ -7,7 +7,7 @@ import requests
 
 load_dotenv()
 
-port = os.getenv('FLASK_RUN_PORT')
+port = os.getenv('FLASK_RUN_PORT', 8080)
 app = Flask(__name__)
 
 @app.route('/fibonacci')
@@ -28,6 +28,7 @@ def get_fibonacci():
     number = request.args.get('number', type=int)
     as_ip = request.args.get('as_ip', type=str)
     as_port = request.args.get('as_port', type=str)
+
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     message = f"TYPE=A\nNAME={hostname}"
@@ -56,15 +57,11 @@ def get_fibonacci():
             return { "message": value}, 200
         else:
             return { "error": f"FS server request failed with status {status}"}, 500
+    except Exception as e:
+        return { "error": str(e) }, 500
     finally:
         sock.close()
-    return {
-        "hostname": hostname,
-        "fs_port": fs_port,
-        "number": number,
-        "as_ip": as_ip,
-        "as_port": as_port
-    }
+
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=True)

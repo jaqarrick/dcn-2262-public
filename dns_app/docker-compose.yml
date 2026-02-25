@@ -6,6 +6,9 @@ services:
       - "53533:53533/udp"
     environment:
       - AS_PORT=53533
+      - DB_PATH=/app/dns.db
+    networks:
+      - dns-network
 
   fs:
     build: ./FS
@@ -16,6 +19,8 @@ services:
       - FLASK_RUN_PORT=9090
     depends_on:
       - as
+    networks:
+      - dns-network
   us:
     build: ./US
     container_name: us-server
@@ -25,3 +30,8 @@ services:
       - FLASK_RUN_PORT=8080
     depends_on:
       - fs
+    networks:
+      - dns-network
+networks:
+  dns-network:
+    driver: bridge

@@ -12,5 +12,5 @@ COPY --chown=nyu:nyu requirements.txt Makefile .
 RUN pip install -r requirements.txt
 USER nyu
 COPY --chown=nyu:nyu . .
-EXPOSE 53533/udp
+EXPOSE 9090
 CMD [ "python", "./app.py" ]

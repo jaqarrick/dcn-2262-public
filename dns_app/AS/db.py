@@ -4,30 +4,30 @@ import os
 
 db_path= os.getenv('DB_PATH', "dns.db")
 
-
 def get_connection() -> sqlite3.Connection:
-
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
 
 
 def init_db() -> None:
-    print("Initializing DB")
-    with get_connection() as conn:
-        conn.executescript("""
-            BEGIN;
-            CREATE TABLE IF NOT EXISTS records (
-                id         INTEGER PRIMARY KEY AUTOINCREMENT,
-                name       TEXT NOT NULL,
-                type       TEXT NOT NULL,
-                value      TEXT NOT NULL,
-                ttl        INTEGER NOT NULL,
-                expires_at INTEGER
-            );
-            CREATE INDEX IF NOT EXISTS idx_name_type ON records (name, type);
-            COMMIT;
-        """)
+    try:
+        with get_connection() as conn:
+            conn.executescript("""
+                BEGIN;
+                CREATE TABLE IF NOT EXISTS records (
+                    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name       TEXT NOT NULL,
+                    type       TEXT NOT NULL,
+                    value      TEXT NOT NULL,
+                    ttl        INTEGER NOT NULL,
+                    expires_at INTEGER
+                );
+                CREATE INDEX IF NOT EXISTS idx_name_type ON records (name, type);
+                COMMIT;
+            """)
+    except:
+        print("DB Init failed")
 
 
 def insert_record(name: str, record_type: str, value: str, ttl: int) -> None:

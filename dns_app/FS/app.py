@@ -24,6 +24,7 @@ def register():
     message = f"TYPE=A\nNAME={hostname} VALUE={ip} TTL=10"
     addr = (as_ip, int(as_port)) 
 
+    print(addr, "<< address")
     try:
         sock.sendto(message.encode(), addr)
         response, _ = sock.recvfrom(1024)
