@@ -8,3 +8,14 @@ make install
 make run
 ```
 
+You can also run all three services with 
+
+```
+docker compose up
+```
+
+Then test the endpoints with
+
+```
+bash test.sh
+```
