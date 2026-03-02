@@ -9,6 +9,8 @@ RUN groupadd -g 799 nyu && \
     useradd -r -u 999 -g nyu nyu
 
 RUN mkdir -p /app && chown -R nyu:nyu /app
+RUN mkdir -p /app/data && chown -R nyu:nyu /app/data
+
 WORKDIR /app
 
 COPY --chown=nyu:nyu requirements.txt .
@@ -19,4 +21,4 @@ USER nyu
 
 EXPOSE 53533/udp
 
-CMD ["python", "./app.py"]
+CMD ["python", "/app/app.py"]

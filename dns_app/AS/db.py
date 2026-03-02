@@ -2,7 +2,7 @@ import sqlite3
 import time
 import os
 
-db_path= os.getenv('DB_PATH', "dns.db")
+db_path= os.getenv('DB_PATH', "/app/data/dns.db")
 
 def get_connection() -> sqlite3.Connection:
     conn = sqlite3.connect(db_path)
