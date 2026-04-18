@@ -2,7 +2,6 @@
 #define TOKENIZER_H
 
 using namespace std;
-#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -10,29 +9,15 @@ using namespace std;
 class Tokenizer {
 
 private:
-  ifstream in_file;
+  istream& in;
   istringstream line;
   string currentToken;
-
-  bool verbose = false;
+  bool verbose;
 
 public:
-  Tokenizer(const string &filename, bool verbose) : in_file(filename) {
-    if (verbose) {
-      cout << "Opening file: " << filename << endl;
-    }
-
-    if (!in_file.is_open()) {
-      throw runtime_error("Failed to open file: " + filename);
-    }
-  }
-
-  ~Tokenizer() {
-    if (in_file.is_open()) {
-      if (verbose)
-        cout << "Closing file" << endl;
-      in_file.close();
-    }
+  Tokenizer(bool verbose, istream& in = cin) : in(in), verbose(verbose) {
+    if (verbose)
+      cout << "Reading from stdin" << endl;
   }
 
   string *getToken() {
@@ -43,7 +28,7 @@ public:
         return &currentToken;
       }
       string buf;
-      if (!getline(in_file, buf)) {
+      if (!getline(in, buf)) {
         if (verbose)
           cout << "EOF reached" << endl;
         return nullptr;

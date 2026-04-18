@@ -55,7 +55,9 @@ private:
     fsm.registerTransition(
         new Transition(&CLOSED, &SYN_SENT, &ACTIVE, &regularAction));
     fsm.registerTransition(
-        new Transition(&LISTEN, &SYN_RCVD, &SYN, &regularAction));
+        new Transition(&LISTEN, &SYN_RCVD, &SYN, &regularAction));    
+    fsm.registerTransition(
+        new Transition(&LISTEN, &CLOSED, &CLOSE, &regularAction));
     fsm.registerTransition(
         new Transition(&SYN_RCVD, &ESTABLISHED, &SYNACK, &regularAction));
     fsm.registerTransition(
@@ -83,7 +85,7 @@ private:
     fsm.registerTransition(
         new Transition(&ESTABLISHED, &FIN_WAIT_1, &CLOSE, &regularAction));
     fsm.registerTransition(
-        new Transition(&CLOSE_WAIT, &LAST_ACK, &ACK, &regularAction));
+        new Transition(&CLOSE_WAIT, &LAST_ACK, &CLOSE, &regularAction));
     fsm.registerTransition(
         new Transition(&LAST_ACK, &CLOSED, &ACK, &regularAction));
   }
